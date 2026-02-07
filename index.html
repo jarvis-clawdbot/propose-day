@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propose Day ❤️</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Particle Effects -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <div class="date-badge">February 14th</div>
+                <h1 class="title">
+                    <span class="title-word">P</span>
+                    <span class="title-word">r</span>
+                    <span class="title-word">o</span>
+                    <span class="title-word">p</span>
+                    <span class="title-word">o</span>
+                    <span class="title-word">s</span>
+                    <span class="title-word">e</span>
+                    <span class="title-spacer"></span>
+                    <span class="title-word">D</span>
+                    <span class="title-word">a</span>
+                    <span class="title-word">y</span>
+                </h1>
+                <p class="tagline">A day to speak what's in your heart</p>
+                <div class="heart-line"></div>
+                <p class="subtitle">Where words become promises and silence speaks volumes</p>
+                
+                <div class="cta-buttons">
+                    <a href="letter.html" class="btn btn-primary">
+                        <span class="btn-icon">💌</span>
+                        Read My Letter
+                    </a>
+                    <a href="quotes.html" class="btn btn-secondary">
+                        <span class="btn-icon">✨</span>
+                        Beautiful Words
+                    </a>
+                </div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <span>Explore More</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="section-header">
+                <h2 class="section-title">More Than Just Words</h2>
+                <p class="section-subtitle">Every moment is special when shared with you</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon">🌹</div>
+                    <h3>The Beginning</h3>
+                    <p>Every love story starts with a moment of courage. This is ours.</p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-delay="100">
+                    <div class="feature-icon">💫</div>
+                    <h3>The Spark</h3>
+                    <p>Some connections are written in the stars. Ours was written in heartbeats.</p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-delay="200">
+                    <div class="feature-icon">🌟</div>
+                    <h3>The Promise</h3>
+                    <p>A vow to stand by your side, today and always.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Countdown Section -->
+        <section class="countdown-section">
+            <div class="countdown-container">
+                <h2 class="countdown-title">Every Day Feels Like This</h2>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">0</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">0</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">0</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">0</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+                <p class="countdown-message">Counting beautiful moments together</p>
+            </div>
+        </section>
+
+        <!-- Interactive Message Section -->
+        <section class="message-section">
+            <div class="message-container">
+                <div class="message-box" id="messageBox">
+                    <p class="message-text">Click to reveal what's in my heart...</p>
+                </div>
+                <button class="reveal-btn" id="revealBtn">Reveal My Heart</button>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <footer class="main-footer">
+            <nav class="footer-nav">
+                <a href="letter.html" class="footer-link">
+                    <span class="link-icon">💌</span>
+                    The Letter
+                </a>
+                <a href="quotes.html" class="footer-link">
+                    <span class="link-icon">📝</span>
+                    Quotes
+                </a>
+                <a href="memories.html" class="footer-link">
+                    <span class="link-icon">📸</span>
+                    Our Moments
+                </a>
+            </nav>
+            <p class="footer-note">Made with ❤️ for Propose Day</p>
+        </footer>
+    </div>
+
+    <!-- Custom Cursor Sparkle -->
+    <div class="cursor-sparkle" id="cursorSparkle"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

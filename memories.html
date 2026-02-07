@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Moments 📸</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Memories Page Specific Styles */
+        .memories-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff5ee 0%, #ffe4e1 50%, #ffb6c1 100%);
+            padding: 40px 20px;
+        }
+        
+        .memories-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--deep-red);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-red);
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInLeft 0.5s ease 0.3s forwards;
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-red), var(--soft-pink));
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            padding-right: calc(50% + 40px);
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) {
+            padding-left: calc(50% + 40px);
+            text-align: left;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary-red);
+            border: 4px solid var(--white);
+            border-radius: 50%;
+            box-shadow: 0 3px 10px var(--shadow);
+            z-index: 2;
+        }
+        
+        .timeline-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -20px;
+            border-left-color: var(--white);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -20px;
+            border-right-color: var(--white);
+        }
+        
+        .timeline-date {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary-red), var(--deep-red));
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .timeline-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .timeline-title {
+            font-size: 1.3rem;
+            color: var(--deep-red);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .timeline-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+        
+        /* Photo Gallery Grid */
+        .photo-gallery {
+            margin-top: 80px;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.8s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .gallery-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--deep-red);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-pink));
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+        
+        .gallery-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+        
+        .gallery-item:hover .gallery-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .gallery-label {
+            font-family: 'Georgia', serif;
+            color: var(--deep-red);
+            font-size: 1rem;
+            font-style: italic;
+        }
+        
+        .gallery-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .gallery-item:hover .gallery-placeholder {
+            opacity: 0.3;
+        }
+        
+        /* Interactive Moments */
+        .moments-section {
+            margin-top: 80px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease 1s forwards;
+        }
+        
+        .moments-title {
+            font-size: 2rem;
+            color: var(--deep-red);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+        
+        .moments-wheel {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 40px;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 0 5px 20px var(--shadow);
+            z-index: 2;
+        }
+        
+        .wheel-item {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            animation: counterRotate 20s linear infinite;
+        }
+        
+        @keyframes counterRotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+        
+        /* Wish Section */
+        .wish-section {
+            margin-top: 80px;
+            background: linear-gradient(135deg, var(--primary-red), var(--deep-red));
+            border-radius: 25px;
+            padding: 60px 40px;
+            text-align: center;
+            color: var(--white);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 1.2s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .wish-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .wish-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        /* Navigation Footer */
+        .page-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--light-pink);
+            opacity: 0;
+            animation: fadeIn 1s ease 1.4s forwards;
+        }
+        
+        .footer-nav-inline {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-red);
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                padding-left: 60px;
+                padding-right: 0;
+                text-align: left;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -20px;
+                right: auto;
+                border-left-color: transparent;
+                border-right-color: var(--white);
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .moments-wheel {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .wheel-item {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .timeline-content {
+                padding: 20px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            
+            .wish-section {
+                padding: 40px 25px;
+            }
+        }
+    </style>
+</head>
+<body class="memories-page">
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <!-- Particle Effects -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="memories-container">
+        <!-- Back Button -->
+        <a href="index.html" class="back-btn">
+            <span>←</span>
+            <span>Back to Home</span>
+        </a>
+        
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title">Our Moments</h1>
+            <p class="page-subtitle">Capturing the beautiful memories we've created together</p>
+        </header>
+        
+        <!-- Timeline -->
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Day 1</span>
+                    <span class="timeline-icon">👋</span>
+                    <h3 class="timeline-title">The Beginning</h3>
+                    <p class="timeline-desc">The moment our story began, when everything changed and something beautiful started.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Every Day</span>
+                    <span class="timeline-icon">💬</span>
+                    <h3 class="timeline-title">Endless Conversations</h3>
+                    <p class="timeline-desc">Countless messages, shared laughs, late-night talks, and conversations that never seem to end.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Special Times</span>
+                    <span class="timeline-icon">😊</span>
+                    <h3 class="timeline-title">Your Beautiful Smile</h3>
+                    <p class="timeline-desc">The smile that brightens my day, the laugh that is my favorite sound in the world.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Always</span>
+                    <span class="timeline-icon">🌙</span>
+                    <h3 class="timeline-title">Thought of You</h3>
+                    <p class="timeline-desc">Every night before I sleep, every morning when I wake—you're always in my thoughts.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Forever</span>
+                    <span class="timeline-icon">💫</span>
+                    <h3 class="timeline-title">More to Come</h3>
+                    <p class="timeline-desc">This is just the beginning. A lifetime of beautiful moments awaits us.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Photo Gallery -->
+        <section class="photo-gallery">
+            <h2 class="gallery-title">Photo Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openGallery(0)">
+                    <div class="gallery-placeholder" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ffb6c1%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>📷</text></svg>');"></div>
+                    <span class="gallery-icon">📷</span>
+                    <span class="gallery-label">First Photo</span>
+                </div>
+                <div class="gallery-item" onclick="openGallery(1)">
+                    <div class="gallery-placeholder" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ffe4e1%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🎂</text></svg>');"></div>
+                    <span class="gallery-icon">🎂</span>
+                    <span class="gallery-label">Special Days</span>
+                </div>
+                <div class="gallery-item" onclick="openGallery(2)">
+                    <div class="gallery-placeholder" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23fff5ee%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🌹</text></svg>');"></div>
+                    <span class="gallery-icon">🌹</span>
+                    <span class="gallery-label">Beautiful Moments</span>
+                </div>
+                <div class="gallery-item" onclick="openGallery(3)">
+                    <div class="gallery-placeholder" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ffe4e6%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>💕</text></svg>');"></div>
+                    <span class="gallery-icon">💕</span>
+                    <span class="gallery-label">Favorite Memories</span>
+                </div>
+                <div class="gallery-item" onclick="openGallery(4)">
+                    <div class="gallery-placeholder" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ffc0cb%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🎁</text></svg>');"></div>
+                    <span class="gallery-icon">🎁</span>
+                    <span class="gallery-label">Gifts Given</span>
+                </div>
+                <div class="gallery-item" onclick="openGallery(5)">
+                    <div class="gallery-placeholder" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ffb6c1%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>📸</text></svg>');"></div>
+                    <span class="gallery-icon">📸</span>
+                    <span class="gallery-label">More to Add</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Interactive Moments Wheel -->
+        <section class="moments-section">
+            <h2 class="moments-title">Moments We Share</h2>
+            <div class="moments-wheel">
+                <div class="wheel-center">💝</div>
+                <div class="wheel-item" style="top: 10px; left: 50%; transform: translateX(-50%);">😊</div>
+                <div class="wheel-item" style="top: 70px; left: 85%;">💬</div>
+                <div class="wheel-item" style="top: 160px; left: 85%;">🎭</div>
+                <div class="wheel-item" style="top: 220px; left: 50%; transform: translateX(-50%);">🌙</div>
+                <div class="wheel-item" style="top: 160px; left: 15%;">🎵</div>
+                <div class="wheel-item" style="top: 70px; left: 15%;">☕</div>
+            </div>
+            <p style="color: var(--text-light); font-style: italic;">Hover over items to pause</p>
+        </section>
+        
+        <!-- Wish Section -->
+        <section class="wish-section">
+            <h2 class="wish-title">My Wish for Us</h2>
+            <p class="wish-text">
+                May every day be filled with laughter, every moment be precious, and every memory be cherished. 
+                May we continue to grow together, support each other, and create countless beautiful moments. 
+                Here's to us, to our journey, and to all the amazing memories yet to come. 💕
+            </p>
+        </section>
+        
+        <!-- Page Footer -->
+        <footer class="page-footer">
+            <nav class="footer-nav-inline">
+                <a href="index.html" class="footer-link">
+                    <span class="link-icon">🏠</span>
+                    Home
+                </a>
+                <a href="letter.html" class="footer-link">
+                    <span class="link-icon">💌</span>
+                    Read Letter
+                </a>
+                <a href="quotes.html" class="footer-link">
+                    <span class="link-icon">✨</span>
+                    Quotes
+                </a>
+            </nav>
+            <p style="color: var(--text-light); font-size: 0.9rem;">Made with 💕 for Propose Day</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Timeline Scroll Animation
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.2}s`;
+            timelineObserver.observe(item);
+        });
+        
+        // Gallery Function
+        function openGallery(index) {
+            const messages = [
+                "📷 First Photo - A moment captured forever",
+                "🎂 Special Days - Celebrating together",
+                "🌹 Beautiful Moments - Each one precious",
+                "💕 Favorite Memories - Close to my heart",
+                "🎁 Gifts Given - tokens of affection",
+                "📸 More to Come - Our story continues..."
+            ];
+            
+            alert(messages[index] + "\n\n💡 Tip: Add your own photos by replacing the gallery placeholders!");
+        }
+        
+        // Pause wheel animation on hover
+        const wheel = document.querySelector('.moments-wheel');
+        const wheelItems = document.querySelectorAll('.wheel-item');
+        
+        wheel.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
+            wheelItems.forEach(item => {
+                item.style.animationPlayState = 'paused';
+            });
+        });
+        
+        wheel.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+            wheelItems.forEach(item => {
+                item.style.animationPlayState = 'running';
+            });
+        });
+    </script>
+</body>
+</html>

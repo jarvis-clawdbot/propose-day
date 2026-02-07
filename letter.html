@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter for You 💌</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Letter-specific styles */
+        .letter-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff5ee 0%, #ffe4e1 50%, #ffb6c1 100%);
+            padding: 40px 20px;
+        }
+        
+        .letter-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-red);
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInLeft 0.5s ease 0.3s forwards;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .letter-wrapper {
+            position: relative;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .letter-envelope {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-red), var(--deep-red));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        .envelope-icon {
+            font-size: 5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .letter-content {
+            padding: 80px 60px 60px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .letter-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--light-pink);
+        }
+        
+        .letter-title {
+            font-size: 2rem;
+            color: var(--deep-red);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .letter-date {
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        .letter-body {
+            font-size: 1.15rem;
+            line-height: 2.2;
+            color: var(--text-dark);
+        }
+        
+        .letter-body p {
+            margin-bottom: 25px;
+            text-indent: 40px;
+        }
+        
+        .letter-body p:first-of-type::first-letter {
+            font-size: 3.5rem;
+            float: left;
+            line-height: 1;
+            padding-right: 10px;
+            color: var(--primary-red);
+            font-weight: 500;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, transparent 0%, transparent 0%, rgba(255, 182, 193, 0.3) 0%, rgba(255, 182, 193, 0.3) 100%);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .letter-signature {
+            margin-top: 50px;
+            text-align: right;
+        }
+        
+        .signature-line {
+            display: inline-block;
+            width: 200px;
+            height: 1px;
+            background: var(--text-light);
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+        
+        .signature-text {
+            font-family: 'Georgia', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--deep-red);
+        }
+        
+        .decorative-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .corner-decor {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.2;
+        }
+        
+        .corner-decor.top-left {
+            top: 20px;
+            left: 20px;
+        }
+        
+        .corner-decor.top-right {
+            top: 20px;
+            right: 20px;
+            transform: scaleX(-1);
+        }
+        
+        .corner-decor.bottom-left {
+            bottom: 20px;
+            left: 20px;
+            transform: scaleY(-1);
+        }
+        
+        .corner-decor.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            transform: scale(-1);
+        }
+        
+        .letter-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--light-pink);
+        }
+        
+        .footer-quote {
+            font-style: italic;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .hearts-row {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+        
+        /* Sealed envelope animation */
+        .seal {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: var(--deep-red);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+            z-index: 3;
+        }
+        
+        .seal::before {
+            content: '❤';
+            font-size: 2.5rem;
+            color: var(--white);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .letter-content {
+                padding: 70px 30px 50px;
+            }
+            
+            .letter-body {
+                font-size: 1.05rem;
+            }
+            
+            .letter-body p {
+                text-indent: 25px;
+            }
+            
+            .letter-title {
+                font-size: 1.6rem;
+            }
+            
+            .envelope-icon {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .letter-content {
+                padding: 60px 20px 40px;
+            }
+            
+            .letter-body p {
+                text-indent: 20px;
+            }
+            
+            .letter-body p:first-of-type::first-letter {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="letter-page">
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <!-- Particle Effects -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="letter-container">
+        <!-- Back Button -->
+        <a href="index.html" class="back-btn">
+            <span>←</span>
+            <span>Back to Home</span>
+        </a>
+        
+        <!-- Letter Wrapper -->
+        <div class="letter-wrapper">
+            <div class="decorative-elements">
+                <span class="corner-decor top-left">🌹</span>
+                <span class="corner-decor top-right">🌹</span>
+                <span class="corner-decor bottom-left">🌹</span>
+                <span class="corner-decor bottom-right">🌹</span>
+            </div>
+            
+            <div class="letter-envelope">
+                <span class="envelope-icon">💌</span>
+            </div>
+            
+            <div class="seal"></div>
+            
+            <div class="letter-content">
+                <div class="letter-header">
+                    <h1 class="letter-title">A Letter from My Heart</h1>
+                    <p class="letter-date">February 14, 2026</p>
+                </div>
+                
+                <div class="letter-body">
+                    <p>My dearest,</p>
+                    
+                    <p>There are moments in life when words fail us, when language seems too small to capture what the heart feels. And yet, here I am, trying to put into words something that has transformed my entire world.</p>
+                    
+                    <p>From the very first moment our paths crossed, something shifted within me. It was as if the universe had been waiting for exactly this moment, for exactly this connection. <span class="highlight">You walked into my life and made it infinitely more beautiful.</span></p>
+                    
+                    <p>You are the smile that brightens my darkest days, the warmth that comforts me when the world feels cold. Your laughter is my favorite melody, and your presence is my greatest comfort. In you, I have found not just a companion, but a home.</p>
+                    
+                    <p>Life has a way of leading us down unexpected paths, and I am endlessly grateful that destiny chose to lead me to you. <span class="highlight">You have taught me what it means to truly care for someone, to want the best for them, to celebrate their joys and hold their sorrows.</span></p>
+                    
+                    <p>Every day with you feels like a gift. You make ordinary moments extraordinary, and you turn simple gestures into memories that I treasure forever. The way you look at me, the way we talk for hours without realizing time has passed, the silence that feels comfortable rather than awkward—these are the things I fall in love with over and over again.</p>
+                    
+                    <p>I want you to know that you are loved. Not just today, not just on special occasions, but every single moment of every single day. <span class="highlight">You are the first thought on my mind when I wake up and the last before I close my eyes.</span></p>
+                    
+                    <p>Whatever the future holds, I want to face it with you by my side. Through challenges and triumphs, through laughter and tears, through every chapter that life writes for us. You are my person, my heart's choice, my favorite what-if that became our beautiful reality.</p>
+                    
+                    <p>Thank you for being you. Thank you for choosing me. Thank you for making my world a better place just by being in it.</p>
+                    
+                    <p>Here's to us. Here's to every moment yet to come. Here's to a lifetime of creating beautiful memories together.</p>
+                    
+                    <div class="letter-signature">
+                        <span class="signature-line"></span>
+                        <div class="signature-text">Forever yours</div>
+                    </div>
+                </div>
+                
+                <div class="letter-footer">
+                    <p class="footer-quote">"The greatest thing you'll ever learn is just to love and be loved in return."</p>
+                    <div class="hearts-row">💕 💗 💖 💓 💘</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="footer-nav" style="margin-top: 40px; opacity: 0; animation: fadeIn 1s ease 1s forwards;">
+            <a href="index.html" class="footer-link">
+                <span class="link-icon">🏠</span>
+                Home
+            </a>
+            <a href="quotes.html" class="footer-link">
+                <span class="link-icon">✨</span>
+                Quotes
+            </a>
+            <a href="memories.html" class="footer-link">
+                <span class="link-icon">📸</span>
+                Memories
+            </a>
+        </nav>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Words 💫</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Quotes Page Specific Styles */
+        .quotes-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff5ee 0%, #ffe4e1 50%, #ffb6c1 100%);
+            padding: 40px 20px;
+        }
+        
+        .quotes-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--deep-red);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-red);
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInLeft 0.5s ease 0.3s forwards;
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        /* Categories Filter */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .category-btn {
+            padding: 10px 25px;
+            background: var(--white);
+            border: 2px solid var(--primary-red);
+            color: var(--primary-red);
+            border-radius: 50px;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary-red);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        /* Quotes Grid */
+        .quotes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .quote-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .quote-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .quote-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(196, 30, 58, 0.15);
+        }
+        
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--soft-pink);
+            font-family: Georgia, serif;
+            line-height: 1;
+            opacity: 0.5;
+        }
+        
+        .quote-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .quote-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+        
+        .quote-author {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        .quote-author::before {
+            content: '— ';
+        }
+        
+        .quote-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--light-pink);
+            color: var(--deep-red);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 15px;
+        }
+        
+        /* Featured Quote */
+        .featured-quote {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary-red), var(--deep-red));
+            color: var(--white);
+            text-align: center;
+            padding: 60px 40px;
+        }
+        
+        .featured-quote::before {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .featured-quote .quote-text {
+            color: var(--white);
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .featured-quote .quote-author {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Interactive Heart */
+        .heart-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+        
+        .heart-btn:hover,
+        .heart-btn.liked {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        /* Navigation Footer */
+        .page-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--light-pink);
+            opacity: 0;
+            animation: fadeIn 1s ease 1s forwards;
+        }
+        
+        .footer-nav-inline {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-red);
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quotes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-quote .quote-text {
+                font-size: 1.2rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .quote-card {
+                padding: 30px 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .categories {
+                gap: 10px;
+            }
+            
+            .category-btn {
+                padding: 8px 18px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body class="quotes-page">
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <!-- Particle Effects -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="quotes-container">
+        <!-- Back Button -->
+        <a href="index.html" class="back-btn">
+            <span>←</span>
+            <span>Back to Home</span>
+        </a>
+        
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title">Beautiful Words</h1>
+            <p class="page-subtitle">Expressions of the heart, for the heart</p>
+        </header>
+        
+        <!-- Categories Filter -->
+        <div class="categories">
+            <button class="category-btn active" data-category="all">All Quotes</button>
+            <button class="category-btn" data-category="romantic">Romantic</button>
+            <button class="category-btn" data-category="feelings">Feelings</button>
+            <button class="category-btn" data-category="hope">Hope</button>
+            <button class="category-btn" data-category="future">Future</button>
+        </div>
+        
+        <!-- Quotes Grid -->
+        <div class="quotes-grid" id="quotesGrid">
+            <!-- Featured Quote -->
+            <div class="quote-card featured-quote">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">💕</span>
+                <p class="quote-text">In you, I have found my peace, my joy, my home. You are the beautiful surprise I never knew I needed, and now I cannot imagine my life without you.</p>
+                <span class="quote-author">A Heart Speaking</span>
+            </div>
+            
+            <!-- Romantic Quotes -->
+            <div class="quote-card" data-category="romantic">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">🌹</span>
+                <p class="quote-text">Every love story is beautiful, but ours is my favorite because it's real, it's us, and it's written in the language of heartbeats.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Romantic</span>
+            </div>
+            
+            <div class="quote-card" data-category="feelings">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">💓</span>
+                <p class="quote-text">I cannot tell you how difficult it is to breathe when you are all I think about. You have taken over my mind, my heart, and my soul.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Feelings</span>
+            </div>
+            
+            <div class="quote-card" data-category="hope">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">🌟</span>
+                <p class="quote-text">I didn't believe in soulmates until I met you. Now I understand that some souls are just meant to find each other across time and space.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Hope</span>
+            </div>
+            
+            <div class="quote-card" data-category="future">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">🌅</span>
+                <p class="quote-text">I want to build a lifetime of memories with you. Every adventure, every ordinary day, every laugh and tear—side by side, hand in hand.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Future</span>
+            </div>
+            
+            <div class="quote-card" data-category="romantic">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">💝</span>
+                <p class="quote-text">You are the poetry my heart has been trying to write, the melody my soul has been longing to hear, and the dream I never want to wake up from.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Romantic</span>
+            </div>
+            
+            <div class="quote-card" data-category="feelings">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">💗</span>
+                <p class="quote-text">When I look at you, I see my future. When I think of you, I smile. When I'm with you, I'm home. You are my greatest blessing.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Feelings</span>
+            </div>
+            
+            <div class="quote-card" data-category="romantic">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">🌷</span>
+                <p class="quote-text">Loving you is not something I do—it's something I am. You are woven into every beat of my heart, every thought of my mind.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Romantic</span>
+            </div>
+            
+            <div class="quote-card" data-category="hope">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">✨</span>
+                <p class="quote-text">Meeting you was fate, becoming your friend was a choice, but falling in love with you was never in my control. And I wouldn't have it any other way.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Hope</span>
+            </div>
+            
+            <div class="quote-card" data-category="future">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">🚀</span>
+                <p class="quote-text">Tomorrow is uncertain, but one thing I know for sure—I want to spend every tomorrow with you, making memories that will last forever.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Future</span>
+            </div>
+            
+            <div class="quote-card" data-category="feelings">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">💭</span>
+                <p class="quote-text">There is no single moment in my life when I am not thinking of you. You are my constant thought, my endless daydream, my favorite obsession.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Feelings</span>
+            </div>
+            
+            <div class="quote-card" data-category="romantic">
+                <button class="heart-btn" onclick="toggleLike(this)">🤍</button>
+                <span class="quote-icon">🌺</span>
+                <p class="quote-text">You don't just make me happy. You make everything around me happier. The world seems brighter, the music sounds sweeter, and life feels more meaningful with you.</p>
+                <span class="quote-author">Unknown</span>
+                <span class="quote-category">Romantic</span>
+            </div>
+        </div>
+        
+        <!-- Page Footer -->
+        <footer class="page-footer">
+            <nav class="footer-nav-inline">
+                <a href="index.html" class="footer-link">
+                    <span class="link-icon">🏠</span>
+                    Home
+                </a>
+                <a href="letter.html" class="footer-link">
+                    <span class="link-icon">💌</span>
+                    Read Letter
+                </a>
+                <a href="memories.html" class="footer-link">
+                    <span class="link-icon">📸</span>
+                    Our Moments
+                </a>
+            </nav>
+            <p style="color: var(--text-light); font-size: 0.9rem;">Made with 💕 for Propose Day</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Category Filter
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                const cards = document.querySelectorAll('.quote-card:not(.featured-quote)');
+                
+                cards.forEach((card, index) => {
+                    const cardCategory = card.dataset.category;
+                    
+                    if (category === 'all' || cardCategory === category) {
+                        card.style.display = 'block';
+                        card.style.animation = 'none';
+                        card.offsetHeight; // Trigger reflow
+                        card.style.animation = `fadeInUp 0.5s ease ${index * 0.05}s forwards`;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Toggle Like
+        function toggleLike(btn) {
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                btn.textContent = '🤍';
+            } else {
+                btn.classList.add('liked');
+                btn.textContent = '❤️';
+                
+                // Add animation
+                btn.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1.2)';
+                }, 150);
+            }
+        }
+        
+        // Scroll Animation for Quotes
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('.quote-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
