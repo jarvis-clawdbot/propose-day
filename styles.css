@@ -296,6 +296,18 @@ body {
     transform: translateY(-3px);
 }
 
+.btn-tertiary {
+    background: linear-gradient(135deg, #fff5ee, #ffe4e1);
+    color: var(--deep-red);
+    border: 2px solid var(--soft-pink);
+}
+
+.btn-tertiary:hover {
+    background: var(--light-pink);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(255, 182, 193, 0.4);
+}
+
 .btn-icon {
     font-size: 1.2rem;
 }
